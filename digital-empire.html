@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Empire — Transforma tu Empresa</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #030712;
+  --bg2: #0a1628;
+  --bg3: #0f1f3d;
+  --panel: #0d1b33;
+  --panel2: #112040;
+  --border: #1e3a5f;
+  --border2: #2a5080;
+  --accent: #00d4ff;
+  --accent2: #0080ff;
+  --accent3: #7c3aed;
+  --green: #10b981;
+  --red: #ef4444;
+  --amber: #f59e0b;
+  --pink: #ec4899;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --glow: 0 0 20px rgba(0,212,255,0.3);
+  --glow2: 0 0 40px rgba(0,128,255,0.2);
+  --font: 'Orbitron', monospace;
+  --font2: 'Exo 2', sans-serif;
+}
+html { font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font2);
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap');
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ===== SCREENS ===== */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; }
+
+/* ===== PARTICLES CANVAS ===== */
+#particles-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+
+/* ===== INTRO SCREEN ===== */
+#screen-intro {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+  text-align: center;
+}
+.intro-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 100px;
+  border: 1px solid var(--accent);
+  color: var(--accent); font-size: 0.75rem;
+  letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 2rem;
+  animation: pulse-border 2s ease-in-out infinite;
+}
+@keyframes pulse-border {
+  0%,100% { box-shadow: 0 0 8px rgba(0,212,255,0.3); }
+  50% { box-shadow: 0 0 20px rgba(0,212,255,0.7); }
+}
+.intro-title {
+  font-family: var(--font);
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #00d4ff 0%, #0080ff 40%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: title-glow 3s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 30px rgba(0,212,255,0.4));
+}
+@keyframes title-glow {
+  from { filter: drop-shadow(0 0 20px rgba(0,212,255,0.3)); }
+  to { filter: drop-shadow(0 0 40px rgba(124,58,237,0.5)); }
+}
+.intro-sub {
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  color: var(--text2);
+  margin-bottom: 3rem;
+  letter-spacing: 1px;
+}
+.intro-cards {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  justify-content: center; margin-bottom: 3rem;
+}
+.intro-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  width: 120px;
+  transition: all 0.3s ease;
+}
+.intro-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: var(--glow);
+}
+.intro-card .ico { font-size: 1.8rem; }
+.intro-card span { font-size: 0.7rem; color: var(--text2); text-align: center; }
+.btn-start {
+  background: linear-gradient(135deg, var(--accent2), var(--accent3));
+  color: #fff;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 1rem 3rem;
+  border: none; border-radius: 8px;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 30px rgba(0,128,255,0.4);
+}
+.btn-start::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15));
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+.btn-start:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(124,58,237,0.6); }
+.btn-start:hover::before { transform: translateX(0); }
+.intro-stats {
+  display: flex; gap: 2rem; margin-top: 2rem;
+  flex-wrap: wrap; justify-content: center;
+}
+.intro-stat { color: var(--text2); font-size: 0.8rem; }
+.intro-stat strong { color: var(--accent); font-family: var(--font); font-size: 1rem; }
+
+/* ===== GAME SCREEN ===== */
+#screen-game {
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-logo {
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--accent);
+  white-space: nowrap;
+  letter-spacing: 1px;
+}
+.topbar-stats {
+  display: flex; gap: 0.75rem;
+  flex: 1; flex-wrap: wrap;
+}
+.stat-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+.stat-pill .label { color: var(--text3); font-size: 0.7rem; }
+.stat-pill .value { font-weight: 600; font-family: var(--font); font-size: 0.8rem; }
+.stat-pill.money .value { color: var(--green); }
+.stat-pill.clients .value { color: var(--accent); }
+.stat-pill.rep .value { color: var(--amber); }
+.stat-pill.digital .value { color: var(--pink); }
+.stat-pill.danger .value { color: var(--red); }
+.topbar-timer {
+  font-family: var(--font);
+  font-size: 1rem; font-weight: 700;
+  color: var(--amber);
+  border: 1px solid var(--amber);
+  border-radius: 6px;
+  padding: 4px 12px;
+  white-space: nowrap;
+  transition: color 0.3s, border-color 0.3s;
+}
+.topbar-timer.urgent { color: var(--red); border-color: var(--red); animation: blink 0.5s ease-in-out infinite; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* ===== MAIN LAYOUT ===== */
+.game-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0;
+  flex: 1;
+  min-height: 0;
+}
+@media (max-width: 768px) {
+  .game-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  overflow-y: auto;
+}
+.sidebar-section-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 0.75rem;
+}
+.company-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+}
+.company-icon {
+  font-size: 3rem; margin-bottom: 0.5rem;
+  transition: all 0.5s ease;
+}
+.company-name {
+  font-family: var(--font);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.company-level {
+  font-size: 0.75rem;
+  color: var(--text2);
+  margin-top: 4px;
+}
+
+/* Progress bars in sidebar */
+.progress-item { margin-bottom: 0.75rem; }
+.progress-label {
+  display: flex; justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+}
+.progress-label span:first-child { color: var(--text2); }
+.progress-label span:last-child { font-weight: 600; font-family: var(--font); font-size: 0.75rem; }
+.progress-bar-track {
+  height: 6px; background: var(--bg);
+  border-radius: 100px; overflow: hidden;
+  position: relative;
+}
+.progress-bar-fill {
+  height: 100%; border-radius: 100px;
+  transition: width 0.5s ease, background 0.5s ease;
+  position: relative;
+}
+.progress-bar-fill::after {
+  content: '';
+  position: absolute; right: 0; top: 0; bottom: 0;
+  width: 20px;
+  background: inherit;
+  filter: blur(4px);
+}
+.bar-digital { background: linear-gradient(90deg, var(--accent3), var(--accent)); }
+.bar-rep { background: linear-gradient(90deg, #d97706, var(--amber)); }
+.bar-security { background: linear-gradient(90deg, #059669, var(--green)); }
+.bar-productivity { background: linear-gradient(90deg, #7c3aed, var(--pink)); }
+.bar-danger { background: linear-gradient(90deg, #b91c1c, var(--red)); }
+
+/* Techs unlocked */
+.tech-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+}
+.tech-chip {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 4px;
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--text3);
+  transition: all 0.4s ease;
+}
+.tech-chip.unlocked {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0,212,255,0.05);
+  box-shadow: 0 0 8px rgba(0,212,255,0.2);
+}
+.tech-chip .tech-ico { font-size: 1.1rem; display: block; margin-bottom: 2px; }
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  padding: 1.25rem;
+  background: var(--bg);
+}
+
+/* ===== LEVEL HEADER ===== */
+.level-header {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.level-badge {
+  background: linear-gradient(135deg, var(--accent2), var(--accent3));
+  color: #fff;
+  font-family: var(--font);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.level-title {
+  font-family: var(--font);
+  font-size: 1rem;
+  color: var(--text);
+}
+.level-desc { font-size: 0.8rem; color: var(--text2); margin-top: 2px; }
+
+/* ===== DECISION CARDS ===== */
+.decision-area {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.decision-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.decision-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent2), var(--accent3));
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s ease;
+}
+.decision-card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: var(--glow2); }
+.decision-card:hover::before { transform: scaleY(1); }
+.decision-card.good-option:hover { border-color: var(--green); }
+.decision-card.bad-option:hover { border-color: var(--red); }
+.decision-icon { font-size: 2.5rem; flex-shrink: 0; }
+.decision-content { flex: 1; min-width: 0; }
+.decision-title { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.decision-desc { font-size: 0.8rem; color: var(--text2); margin-bottom: 0.75rem; line-height: 1.5; }
+.decision-effects {
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+.effect-tag {
+  padding: 2px 8px; border-radius: 100px;
+  font-size: 0.7rem; font-weight: 600;
+}
+.effect-tag.pos { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+.effect-tag.neg { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+.effect-tag.neu { background: rgba(148,163,184,0.1); color: var(--text2); border: 1px solid var(--border); }
+.decision-cost {
+  font-family: var(--font); font-size: 0.75rem;
+  color: var(--amber); white-space: nowrap;
+  margin-left: auto; flex-shrink: 0;
+}
+
+/* ===== EVENTS LOG ===== */
+.events-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.events-title {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+.events-list {
+  display: flex; flex-direction: column; gap: 4px;
+  max-height: 150px; overflow-y: auto;
+}
+.event-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.78rem; color: var(--text2);
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(30,58,95,0.5);
+  animation: slide-in 0.3s ease;
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.event-item .event-ico { flex-shrink: 0; }
+.event-item.event-good { color: var(--green); }
+.event-item.event-bad { color: var(--red); }
+.event-item.event-warn { color: var(--amber); }
+.event-item .event-time { color: var(--text3); font-size: 0.7rem; margin-left: auto; }
+
+/* ===== METRICS GRID ===== */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.metric-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.metric-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px;
+  border-radius: 0 0 12px 12px;
+}
+.metric-card.m-money::after { background: var(--green); }
+.metric-card.m-sales::after { background: var(--accent); }
+.metric-card.m-clients::after { background: var(--pink); }
+.metric-card.m-productivity::after { background: var(--accent3); }
+.metric-value {
+  font-family: var(--font);
+  font-size: 1.4rem; font-weight: 700;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+.metric-label { font-size: 0.7rem; color: var(--text3); margin-top: 4px; }
+.metric-trend {
+  font-size: 0.7rem; margin-top: 4px;
+  display: flex; align-items: center; justify-content: center; gap: 2px;
+}
+.metric-trend.up { color: var(--green); }
+.metric-trend.down { color: var(--red); }
+
+/* ===== MINI CHART ===== */
+.chart-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.chart-title {
+  font-size: 0.65rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--text3);
+  font-weight: 700; margin-bottom: 1rem;
+}
+#mini-chart {
+  width: 100%; height: 80px; display: block;
+}
+
+/* ===== POPUP / MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(3,7,18,0.9);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.visible { display: flex; }
+.modal-box {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: var(--glow2);
+  animation: modal-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-icon { font-size: 3rem; text-align: center; margin-bottom: 1rem; }
+.modal-title { font-family: var(--font); font-size: 1.1rem; text-align: center; margin-bottom: 0.5rem; }
+.modal-body { font-size: 0.85rem; color: var(--text2); line-height: 1.6; text-align: center; margin-bottom: 1.5rem; }
+.modal-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+.btn-modal {
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-family: var(--font2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+.btn-modal.primary {
+  background: linear-gradient(135deg, var(--accent2), var(--accent3));
+  color: #fff;
+}
+.btn-modal.secondary {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border2);
+}
+.btn-modal:hover { transform: scale(1.05); }
+
+/* ===== NOTIFICATION TOAST ===== */
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.85rem;
+  max-width: 320px;
+  z-index: 2000;
+  opacity: 0; transform: translateY(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.toast.t-good { border-color: var(--green); }
+.toast.t-bad { border-color: var(--red); }
+.toast.t-warn { border-color: var(--amber); }
+
+/* ===== RANDOM EVENT PANEL ===== */
+.random-event {
+  display: none;
+  background: var(--panel2);
+  border: 2px solid var(--amber);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  animation: event-pulse 1s ease-in-out 3;
+  position: relative;
+}
+.random-event.visible { display: block; }
+@keyframes event-pulse {
+  0%,100% { box-shadow: 0 0 10px rgba(245,158,11,0.3); }
+  50% { box-shadow: 0 0 30px rgba(245,158,11,0.7); }
+}
+.random-event-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 0.75rem;
+}
+.re-badge {
+  background: var(--amber); color: var(--bg);
+  font-family: var(--font); font-size: 0.6rem; font-weight: 700;
+  padding: 2px 10px; border-radius: 100px; letter-spacing: 2px;
+}
+.re-title { font-size: 0.95rem; font-weight: 600; }
+.re-desc { font-size: 0.8rem; color: var(--text2); margin-bottom: 1rem; line-height: 1.5; }
+.re-options { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.re-btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: var(--bg2);
+  color: var(--text);
+  font-family: var(--font2);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.re-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.03); }
+
+/* ===== END SCREEN ===== */
+#screen-end {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.end-badge {
+  font-size: 5rem; margin-bottom: 1rem;
+  animation: trophy-bounce 1s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes trophy-bounce {
+  from { opacity: 0; transform: scale(0) rotate(-20deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+.end-type {
+  font-family: var(--font); font-size: 1.5rem; font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+.end-desc { font-size: 0.9rem; color: var(--text2); margin-bottom: 2rem; max-width: 480px; }
+.end-scores {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1rem; width: 100%; max-width: 600px; margin-bottom: 2rem;
+}
+.end-score-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 1rem;
+}
+.esc-value {
+  font-family: var(--font); font-size: 1.6rem; font-weight: 700;
+}
+.esc-label { font-size: 0.7rem; color: var(--text2); margin-top: 4px; }
+.end-tips {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  max-width: 560px;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+.end-tips h3 {
+  font-size: 0.7rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--text3);
+  margin-bottom: 0.75rem;
+}
+.end-tips ul { list-style: none; }
+.end-tips li {
+  font-size: 0.82rem; color: var(--text2);
+  padding: 4px 0; padding-left: 1.2rem;
+  position: relative; line-height: 1.5;
+}
+.end-tips li::before {
+  content: '▹'; position: absolute; left: 0;
+  color: var(--accent);
+}
+.btn-restart {
+  background: linear-gradient(135deg, var(--accent2), var(--accent3));
+  color: #fff;
+  font-family: var(--font); font-size: 0.9rem; font-weight: 700;
+  letter-spacing: 2px;
+  padding: 0.85rem 2.5rem;
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 30px rgba(0,128,255,0.4);
+}
+.btn-restart:hover { transform: scale(1.05); }
+
+/* ===== SCANLINE EFFECT ===== */
+.scanlines {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.05) 2px,
+    rgba(0,0,0,0.05) 4px
+  );
+  animation: scan 8s linear infinite;
+}
+@keyframes scan {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+/* ===== HEX GRID BG DECORATION ===== */
+.hex-bg {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='104' viewBox='0 0 60 104'%3E%3Cpath d='M0 52 L15 26 L45 26 L60 52 L45 78 L15 78 Z' fill='none' stroke='%2300d4ff' stroke-width='1'/%3E%3C/svg%3E");
+}
+
+/* ===== MISSION PANEL ===== */
+.missions-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.mission-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(30,58,95,0.5);
+  font-size: 0.8rem;
+}
+.mission-item:last-child { border-bottom: none; }
+.mission-check { font-size: 1rem; }
+.mission-text { color: var(--text2); flex: 1; }
+.mission-reward { color: var(--amber); font-size: 0.75rem; font-family: var(--font); }
+.mission-item.done .mission-text { color: var(--text3); text-decoration: line-through; }
+.mission-item.done .mission-check { filter: grayscale(0.5); }
+</style>
+</head>
+<body>
+
+<!-- Ambient FX -->
+<canvas id="particles-canvas"></canvas>
+<div class="hex-bg"></div>
+<div class="scanlines"></div>
+
+<!-- ===== INTRO SCREEN ===== -->
+<div id="screen-intro" class="screen active">
+  <span class="intro-badge">🎮 Videojuego Educativo</span>
+  <h1 class="intro-title">DIGITAL<br>EMPIRE</h1>
+  <p class="intro-sub">Transforma tu empresa tradicional en una potencia digital</p>
+
+  <div class="intro-cards">
+    <div class="intro-card"><span class="ico">🛒</span><span>Comercio Electrónico</span></div>
+    <div class="intro-card"><span class="ico">🛡️</span><span>Ciberseguridad</span></div>
+    <div class="intro-card"><span class="ico">📱</span><span>Marketing Digital</span></div>
+    <div class="intro-card"><span class="ico">🤖</span><span>Inteligencia Artificial</span></div>
+    <div class="intro-card"><span class="ico">☁️</span><span>Cloud Computing</span></div>
+  </div>
+
+  <button class="btn-start" onclick="startGame()">▶ INICIAR JUEGO</button>
+
+  <div class="intro-stats">
+    <div class="intro-stat"><strong>10</strong> Niveles</div>
+    <div class="intro-stat"><strong>30+</strong> Decisiones</div>
+    <div class="intro-stat"><strong>20+</strong> Eventos</div>
+    <div class="intro-stat"><strong>3</strong> Finales Posibles</div>
+  </div>
+</div>
+
+<!-- ===== GAME SCREEN ===== -->
+<div id="screen-game" class="screen">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-logo">⚡ DIGITAL EMPIRE</div>
+    <div class="topbar-stats">
+      <div class="stat-pill money">
+        <span class="label">PRESUPUESTO</span>
+        <span class="value" id="stat-money">€10,000</span>
+      </div>
+      <div class="stat-pill clients">
+        <span class="label">CLIENTES</span>
+        <span class="value" id="stat-clients">50</span>
+      </div>
+      <div class="stat-pill rep">
+        <span class="label">REPUTACIÓN</span>
+        <span class="value" id="stat-rep">40%</span>
+      </div>
+      <div class="stat-pill digital">
+        <span class="label">DIGITALIZACIÓN</span>
+        <span class="value" id="stat-digital">0%</span>
+      </div>
+      <div class="stat-pill danger">
+        <span class="label">RIESGO</span>
+        <span class="value" id="stat-danger">20%</span>
+      </div>
+    </div>
+    <div class="topbar-timer" id="topbar-timer">⏱ 05:00</div>
+  </div>
+
+  <!-- Layout -->
+  <div class="game-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- Company -->
+      <div>
+        <div class="sidebar-section-title">Tu Empresa</div>
+        <div class="company-card">
+          <div class="company-icon" id="company-icon">🏪</div>
+          <div class="company-name" id="company-name">TIENDA RODRÍGUEZ</div>
+          <div class="company-level" id="company-level">Empresa Tradicional</div>
+        </div>
+      </div>
+
+      <!-- Progress Bars -->
+      <div>
+        <div class="sidebar-section-title">Indicadores</div>
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>💻 Digitalización</span>
+            <span id="pb-digital-val" style="color:var(--accent)">0%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill bar-digital" id="pb-digital" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>⭐ Reputación</span>
+            <span id="pb-rep-val" style="color:var(--amber)">40%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill bar-rep" id="pb-rep" style="width:40%"></div>
+          </div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>🛡️ Seguridad</span>
+            <span id="pb-security-val" style="color:var(--green)">10%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill bar-security" id="pb-security" style="width:10%"></div>
+          </div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>⚙️ Productividad</span>
+            <span id="pb-prod-val" style="color:var(--pink)">20%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill bar-productivity" id="pb-prod" style="width:20%"></div>
+          </div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label">
+            <span>⚠️ Riesgo Ciber.</span>
+            <span id="pb-danger-val" style="color:var(--red)">20%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill bar-danger" id="pb-danger" style="width:20%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technologies -->
+      <div>
+        <div class="sidebar-section-title">Tecnologías Adoptadas</div>
+        <div class="tech-grid">
+          <div class="tech-chip" id="tech-web"><span class="tech-ico">🌐</span>Web</div>
+          <div class="tech-chip" id="tech-ecom"><span class="tech-ico">🛒</span>E-com</div>
+          <div class="tech-chip" id="tech-sec"><span class="tech-ico">🛡️</span>Segur.</div>
+          <div class="tech-chip" id="tech-mkt"><span class="tech-ico">📣</span>Mktg</div>
+          <div class="tech-chip" id="tech-ai"><span class="tech-ico">🤖</span>IA</div>
+          <div class="tech-chip" id="tech-cloud"><span class="tech-ico">☁️</span>Cloud</div>
+          <div class="tech-chip" id="tech-crm"><span class="tech-ico">👥</span>CRM</div>
+          <div class="tech-chip" id="tech-auto"><span class="tech-ico">⚙️</span>Auto.</div>
+          <div class="tech-chip" id="tech-data"><span class="tech-ico">📊</span>Data</div>
+        </div>
+      </div>
+
+      <!-- Missions -->
+      <div>
+        <div class="sidebar-section-title">Misiones Activas</div>
+        <div id="missions-list">
+          <div class="mission-item" id="mission-web">
+            <span class="mission-check">🎯</span>
+            <span class="mission-text">Crear presencia online</span>
+            <span class="mission-reward">+€1,500</span>
+          </div>
+          <div class="mission-item" id="mission-100clients">
+            <span class="mission-check">🎯</span>
+            <span class="mission-text">Llegar a 100 clientes</span>
+            <span class="mission-reward">+€2,000</span>
+          </div>
+          <div class="mission-item" id="mission-secure">
+            <span class="mission-check">🎯</span>
+            <span class="mission-text">Seguridad ≥ 70%</span>
+            <span class="mission-reward">+€1,000</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content" id="main-content">
+
+      <!-- Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="metric-card m-money">
+          <div class="metric-value" id="m-money">€10,000</div>
+          <div class="metric-label">Presupuesto</div>
+          <div class="metric-trend" id="m-money-trend"></div>
+        </div>
+        <div class="metric-card m-sales">
+          <div class="metric-value" id="m-sales">€0</div>
+          <div class="metric-label">Ventas Mensuales</div>
+          <div class="metric-trend" id="m-sales-trend"></div>
+        </div>
+        <div class="metric-card m-clients">
+          <div class="metric-value" id="m-clients">50</div>
+          <div class="metric-label">Clientes Activos</div>
+          <div class="metric-trend" id="m-clients-trend"></div>
+        </div>
+        <div class="metric-card m-productivity">
+          <div class="metric-value" id="m-prod">20%</div>
+          <div class="metric-label">Productividad</div>
+          <div class="metric-trend" id="m-prod-trend"></div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-panel">
+        <div class="chart-title">📈 Evolución de Ventas</div>
+        <canvas id="mini-chart"></canvas>
+      </div>
+
+      <!-- Random Event (hidden by default) -->
+      <div class="random-event" id="random-event">
+        <div class="random-event-header">
+          <span class="re-badge">⚡ EVENTO ALEATORIO</span>
+          <span class="re-title" id="re-title">¡Atención!</span>
+        </div>
+        <div class="re-desc" id="re-desc">Descripción del evento...</div>
+        <div class="re-options" id="re-options"></div>
+      </div>
+
+      <!-- Level Header -->
+      <div class="level-header">
+        <div>
+          <div class="level-badge" id="level-badge">NIVEL 1</div>
+        </div>
+        <div>
+          <div class="level-title" id="level-title">Página Web — Presencia Online</div>
+          <div class="level-desc" id="level-desc">Tu tienda física está perdiendo clientes. ¡Es hora de ir al mundo digital!</div>
+        </div>
+      </div>
+
+      <!-- Decisions -->
+      <div class="decision-area" id="decision-area"></div>
+
+      <!-- Events Log -->
+      <div class="events-panel">
+        <div class="events-title">📋 Registro de Actividad</div>
+        <div class="events-list" id="events-list">
+          <div class="event-item">
+            <span class="event-ico">🏪</span>
+            <span>Has iniciado tu negocio tradicional. ¡Es hora de digitalizarte!</span>
+            <span class="event-time">ahora</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ===== END SCREEN ===== -->
+<div id="screen-end" class="screen">
+  <div class="end-badge" id="end-badge">🏆</div>
+  <div class="end-type" id="end-type">¡EMPRESA LÍDER DIGITAL!</div>
+  <div class="end-desc" id="end-desc">Has transformado con éxito tu empresa tradicional en una potencia digital.</div>
+
+  <div class="end-scores">
+    <div class="end-score-card">
+      <div class="esc-value" id="end-digital" style="color:var(--accent)">0%</div>
+      <div class="esc-label">Digitalización</div>
+    </div>
+    <div class="end-score-card">
+      <div class="esc-value" id="end-money" style="color:var(--green)">€0</div>
+      <div class="esc-label">Presupuesto Final</div>
+    </div>
+    <div class="end-score-card">
+      <div class="esc-value" id="end-clients" style="color:var(--pink)">0</div>
+      <div class="esc-label">Clientes Finales</div>
+    </div>
+    <div class="end-score-card">
+      <div class="esc-value" id="end-score" style="color:var(--amber)">0</div>
+      <div class="esc-label">Puntuación Total</div>
+    </div>
+  </div>
+
+  <div class="end-tips">
+    <h3>💡 Lo que aprendiste</h3>
+    <ul id="end-tips-list"></ul>
+  </div>
+
+  <button class="btn-restart" onclick="restartGame()">↩ JUGAR DE NUEVO</button>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-icon" id="modal-icon">ℹ️</div>
+    <div class="modal-title" id="modal-title">Título</div>
+    <div class="modal-body" id="modal-body">Cuerpo del modal</div>
+    <div class="modal-actions" id="modal-actions">
+      <button class="btn-modal primary" onclick="closeModal()">Entendido</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span id="toast-icon">✅</span>
+  <span id="toast-msg">Mensaje</span>
+</div>
+
+<script>
+/* ===========================
+   DIGITAL EMPIRE — GAME LOGIC
+   =========================== */
+
+// ---- STATE ----
+let G = {};
+
+function initState() {
+  G = {
+    money: 10000,
+    clients: 50,
+    rep: 40,
+    digital: 0,
+    security: 10,
+    productivity: 20,
+    dangerLevel: 20,
+    sales: 0,
+    level: 0,
+    timeLeft: 300, // 5 min
+    timer: null,
+    paused: false,
+    salesHistory: [0,0,0,0,0,0,0],
+    events: [],
+    techs: { web:false, ecom:false, sec:false, mkt:false, ai:false, cloud:false, crm:false, auto:false, data:false },
+    missions: { web:false, m100clients:false, secure:false },
+    randomEventActive: false,
+    gameOver: false,
+    score: 0,
+    learnings: []
+  };
+}
+
+// ---- LEVELS / DECISIONS ----
+const LEVELS = [
+  {
+    id: 0,
+    badge: "NIVEL 1",
+    title: "Página Web — Presencia Online",
+    desc: "Tu tienda física está perdiendo clientes. ¡Es hora de ir al mundo digital!",
+    choices: [
+      {
+        id: "web_yes",
+        icon: "🌐",
+        title: "Crear una Tienda Online",
+        desc: "Contrata un desarrollador web para crear tu e-commerce. Inversión inicial pero gran retorno. Los clientes podrán comprarte 24/7.",
+        cost: 1500,
+        effects: [
+          { label: "+20% Digitalización", key: "digital", val: 20, type: "pos" },
+          { label: "+30 Clientes", key: "clients", val: 30, type: "pos" },
+          { label: "+€3,000 Ventas/mes", key: "sales", val: 3000, type: "pos" },
+          { label: "-€1,500", key: "money", val: -1500, type: "neg" }
+        ],
+        tech: "web",
+        learning: "Una tienda online permite vender 24/7 y alcanzar clientes fuera de tu zona geográfica.",
+        good: true
+      },
+      {
+        id: "web_no",
+        icon: "🏪",
+        title: "Solo Tienda Física",
+        desc: "Mantener solo la tienda presencial. Sin gastos iniciales, pero perderás competitividad frente a los negocios digitales.",
+        cost: 0,
+        effects: [
+          { label: "-10 Clientes", key: "clients", val: -10, type: "neg" },
+          { label: "-10% Reputación", key: "rep", val: -10, type: "neg" },
+          { label: "Sin ventas online", key: null, val: 0, type: "neg" }
+        ],
+        tech: null,
+        learning: "Ignorar el canal online en 2024 equivale a perder el 60% del mercado potencial.",
+        good: false
+      }
+    ]
+  },
+  {
+    id: 1,
+    badge: "NIVEL 2",
+    title: "Facturación Digital",
+    desc: "El papel está obsoleto. Digitaliza tu sistema de facturación para ganar eficiencia.",
+    choices: [
+      {
+        id: "invoice_digital",
+        icon: "🧾",
+        title: "Implementar Facturación Electrónica",
+        desc: "Sistema de facturación digital que cumple con la normativa. Reduce errores, ahorra tiempo y es legalmente válido.",
+        cost: 500,
+        effects: [
+          { label: "+10% Digitalización", key: "digital", val: 10, type: "pos" },
+          { label: "+15% Productividad", key: "productivity", val: 15, type: "pos" },
+          { label: "+€800/mes ahorrado", key: "sales", val: 800, type: "pos" },
+          { label: "-€500", key: "money", val: -500, type: "neg" }
+        ],
+        tech: "data",
+        learning: "La facturación electrónica reduce costes administrativos hasta un 80% y elimina el papel.",
+        good: true
+      },
+      {
+        id: "invoice_paper",
+        icon: "📝",
+        title: "Seguir con Facturas en Papel",
+        desc: "Continuar con el método tradicional. Económico a corto plazo pero ineficiente y propenso a errores.",
+        cost: 0,
+        effects: [
+          { label: "-5% Productividad", key: "productivity", val: -5, type: "neg" },
+          { label: "+5% Riesgo Error", key: "dangerLevel", val: 5, type: "neg" },
+          { label: "Sin mejora eficiencia", key: null, val: 0, type: "neg" }
+        ],
+        tech: null,
+        learning: "Las empresas que no digitalizan su administración invierten 4 veces más tiempo en gestión.",
+        good: false
+      }
+    ]
+  },
+  {
+    id: 2,
+    badge: "NIVEL 3",
+    title: "Ciberseguridad — Protege tu Empresa",
+    desc: "Los ciberataques van en aumento. ¿Proteges tu empresa o juegas con el riesgo?",
+    choices: [
+      {
+        id: "sec_full",
+        icon: "🔐",
+        title: "Instalar Antivirus, Firewall y VPN",
+        desc: "Protección completa: antivirus empresarial, firewall perimetral y VPN para empleados remotos. Inversión esencial.",
+        cost: 1200,
+        effects: [
+          { label: "+60% Seguridad", key: "security", val: 60, type: "pos" },
+          { label: "-40% Riesgo", key: "dangerLevel", val: -40, type: "pos" },
+          { label: "+5% Digital", key: "digital", val: 5, type: "pos" },
+          { label: "-€1,200", key: "money", val: -1200, type: "neg" }
+        ],
+        tech: "sec",
+        learning: "Un ciberataque cuesta de media €90,000 a una PYME. La prevención es 75 veces más barata.",
+        good: true
+      },
+      {
+        id: "sec_basic",
+        icon: "🔓",
+        title: "Solo Antivirus Gratis",
+        desc: "Instalar un antivirus gratuito sin más protección. Algo es mejor que nada, pero muy insuficiente.",
+        cost: 0,
+        effects: [
+          { label: "+20% Seguridad", key: "security", val: 20, type: "pos" },
+          { label: "-10% Riesgo", key: "dangerLevel", val: -10, type: "pos" },
+          { label: "Vulnerable a ataques", key: null, val: 0, type: "neg" }
+        ],
+        tech: null,
+        learning: "El 60% de las PYMES que sufren un ciberataque grave cierran en menos de 6 meses.",
+        good: false
+      },
+      {
+        id: "sec_none",
+        icon: "❌",
+        title: "Ignorar la Ciberseguridad",
+        desc: "Continuar sin protección. Ahorra dinero hoy pero con riesgo muy alto de ciberataque.",
+        cost: 0,
+        effects: [
+          { label: "+25% Riesgo Ciberataque", key: "dangerLevel", val: 25, type: "neg" },
+          { label: "Alta vulnerabilidad", key: null, val: 0, type: "neg" },
+          { label: "Posible multa RGPD", key: null, val: 0, type: "neg" }
+        ],
+        tech: null,
+        learning: "Ignorar la seguridad digital es equivalente a dejar la caja registradora abierta en la calle.",
+        good: false
+      }
+    ]
+  },
+  {
+    id: 3,
+    badge: "NIVEL 4",
+    title: "Marketing Digital — Llega a Más Clientes",
+    desc: "La publicidad tradicional tiene límites. El marketing digital multiplica tu alcance.",
+    choices: [
+      {
+        id: "mkt_social",
+        icon: "📱",
+        title: "Campañas en Redes Sociales + SEO",
+        desc: "Estrategia omnicanal: Instagram, Facebook, Google Ads y optimización SEO. Alcance masivo y medible.",
+        cost: 800,
+        effects: [
+          { label: "+40 Clientes", key: "clients", val: 40, type: "pos" },
+          { label: "+20% Reputación", key: "rep", val: 20, type: "pos" },
+          { label: "+€2,500 Ventas", key: "sales", val: 2500, type: "pos" },
+          { label: "+10% Digital", key: "digital", val: 10, type: "pos" }
+        ],
+        tech: "mkt",
+        learning: "El marketing digital tiene un ROI 10x mayor que la publicidad tradicional para PYMES.",
+        good: true
+      },
+      {
+        id: "mkt_trad",
+        icon: "📰",
+        title: "Solo Publicidad Tradicional",
+        desc: "Folletos, anuncios en prensa local y radio. Alcance limitado a tu zona y muy difícil de medir.",
+        cost: 400,
+        effects: [
+          { label: "+10 Clientes", key: "clients", val: 10, type: "pos" },
+          { label: "+5% Reputación", key: "rep", val: 5, type: "pos" },
+          { label: "-€400", key: "money", val: -400, type: "neg" }
+        ],
+        tech: null,
+        learning: "El 78% de las búsquedas de productos locales terminan en compra online o visita a la tienda.",
+        good: false
+      }
+    ]
+  },
+  {
+    id: 4,
+    badge: "NIVEL 5",
+    title: "Inteligencia Artificial — Automatiza la Atención",
+    desc: "Tu equipo está saturado de consultas. La IA puede ayudarte a atender mejor y más rápido.",
+    choices: [
+      {
+        id: "ai_chatbot",
+        icon: "🤖",
+        title: "Implementar Chatbot con IA",
+        desc: "Chatbot inteligente que atiende el 80% de consultas automáticamente. Disponible 24/7, aprende con cada conversación.",
+        cost: 1000,
+        effects: [
+          { label: "+25% Productividad", key: "productivity", val: 25, type: "pos" },
+          { label: "+20 Clientes", key: "clients", val: 20, type: "pos" },
+          { label: "+15% Digital", key: "digital", val: 15, type: "pos" },
+          { label: "+€1,500 Ventas", key: "sales", val: 1500, type: "pos" }
+        ],
+        tech: "ai",
+        learning: "Los chatbots con IA reducen los costes de atención al cliente hasta un 30% y mejoran la satisfacción.",
+        good: true
+      },
+      {
+        id: "ai_manual",
+        icon: "👤",
+        title: "Atención Manual Exclusivamente",
+        desc: "Contratar más personal para atender las consultas manualmente. Más costoso y con limitaciones horarias.",
+        cost: 600,
+        effects: [
+          { label: "+10 Clientes", key: "clients", val: 10, type: "pos" },
+          { label: "-10% Productividad", key: "productivity", val: -10, type: "neg" },
+          { label: "-€600", key: "money", val: -600, type: "neg" }
+        ],
+        tech: null,
+        learning: "La IA no reemplaza a los humanos, los potencia para hacer tareas de mayor valor añadido.",
+        good: false
+      }
+    ]
+  },
+  {
+    id: 5,
+    badge: "NIVEL 6",
+    title: "Almacenamiento en la Nube",
+    desc: "Tus datos están en discos duros locales. Un fallo y pierdes todo. ¿Migramos a la nube?",
+    choices: [
+      {
+        id: "cloud_full",
+        icon: "☁️",
+        title: "Migrar Todo a Cloud (AWS/Azure)",
+        desc: "Migración completa: datos, aplicaciones y backups en la nube. Acceso desde cualquier lugar y máxima seguridad.",
+        cost: 900,
+        effects: [
+          { label: "+30% Seguridad", key: "security", val: 30, type: "pos" },
+          { label: "+20% Productividad", key: "productivity", val: 20, type: "pos" },
+          { label: "+15% Digital", key: "digital", val: 15, type: "pos" },
+          { label: "-25% Riesgo", key: "dangerLevel", val: -25, type: "pos" }
+        ],
+        tech: "cloud",
+        learning: "Las empresas que usan cloud crecen un 19% más rápido y tienen un 21% más de beneficios.",
+        good: true
+      },
+      {
+        id: "cloud_partial",
+        icon: "💾",
+        title: "Mantener Servidores Locales",
+        desc: "Conservar la infraestructura local. Sin migración, pero con riesgo de pérdida de datos y costes de mantenimiento.",
+        cost: 200,
+        effects: [
+          { label: "+5% Seguridad", key: "security", val: 5, type: "pos" },
+          { label: "+10% Riesgo", key: "dangerLevel", val: 10, type: "neg" },
+          { label: "-€200", key: "money", val: -200, type: "neg" }
+        ],
+        tech: null,
+        learning: "El 90% de las empresas reportan mejoras de seguridad tras migrar a la nube.",
+        good: false
+      }
+    ]
+  },
+  {
+    id: 6,
+    badge: "NIVEL 7",
+    title: "Gestión de Datos y CRM",
+    desc: "¿Conoces realmente a tus clientes? Un CRM te da el poder de la información.",
+    choices: [
+      {
+        id: "crm_yes",
+        icon: "📊",
+        title: "Implementar CRM y Análisis de Datos",
+        desc: "Sistema CRM + Business Intelligence. Conoce qué compran, cuándo y por qué. Toma decisiones basadas en datos reales.",
+        cost: 1100,
+        effects: [
+          { label: "+30 Clientes", key: "clients", val: 30, type: "pos" },
+          { label: "+€2,000 Ventas", key: "sales", val: 2000, type: "pos" },
+          { label: "+10% Digital", key: "digital", val: 10, type: "pos" },
+          { label: "+15% Reputación", key: "rep", val: 15, type: "pos" }
+        ],
+        tech: "crm",
+        learning: "Las empresas que usan CRM ven un aumento del 41% en ingresos por vendedor.",
+        good: true
+      },
+      {
+        id: "crm_no",
+        icon: "📋",
+        title: "Gestionar Clientes en Excel",
+        desc: "Continuar con hojas de cálculo manuales. Gratis pero ineficiente y propenso a errores cuando crece el negocio.",
+        cost: 0,
+        effects: [
+          { label: "-5% Productividad", key: "productivity", val: -5, type: "neg" },
+          { label: "Sin insights", key: null, val: 0, type: "neg" },
+          { label: "Riesgo errores datos", key: null, val: 0, type: "neg" }
+        ],
+        tech: null,
+        learning: "Las decisiones basadas en datos tienen 5 veces más probabilidad de ser acertadas.",
+        good: false
+      }
+    ]
+  },
+  {
+    id: 7,
+    badge: "NIVEL 8",
+    title: "Automatización de Procesos",
+    desc: "Tu equipo pierde horas en tareas repetitivas. La automatización los liberará.",
+    choices: [
+      {
+        id: "auto_full",
+        icon: "⚙️",
+        title: "Automatizar con RPA e Integraciones",
+        desc: "Automatización robótica de procesos: pedidos, emails, inventario y reportes se generan solos. Tu equipo hace lo importante.",
+        cost: 1300,
+        effects: [
+          { label: "+35% Productividad", key: "productivity", val: 35, type: "pos" },
+          { label: "+€2,500 Ventas", key: "sales", val: 2500, type: "pos" },
+          { label: "+10% Digital", key: "digital", val: 10, type: "pos" },
+          { label: "+15 Clientes", key: "clients", val: 15, type: "pos" }
+        ],
+        tech: "auto",
+        learning: "La automatización puede eliminar hasta el 45% de las tareas manuales repetitivas.",
+        good: true
+      },
+      {
+        id: "auto_none",
+        icon: "🔄",
+        title: "Procesos Manuales",
+        desc: "Continuar con todo manual. Sin inversión pero el equipo pierde productividad en tareas que podría hacer una máquina.",
+        cost: 0,
+        effects: [
+          { label: "-10% Productividad", key: "productivity", val: -10, type: "neg" },
+          { label: "Cuellos de botella", key: null, val: 0, type: "neg" },
+          { label: "Errores humanos", key: null, val: 0, type: "neg" }
+        ],
+        tech: null,
+        learning: "Los empleados que realizan tareas repetitivas tienen un 68% menos de satisfacción laboral.",
+        good: false
+      }
+    ]
+  },
+  {
+    id: 8,
+    badge: "NIVEL 9",
+    title: "Redes Sociales y Comunidad",
+    desc: "Tus clientes están en redes sociales. ¿Construyes comunidad o te quedas al margen?",
+    choices: [
+      {
+        id: "social_full",
+        icon: "📲",
+        title: "Estrategia Completa de RRSS",
+        desc: "Community Manager + contenido regular + interacción con la comunidad. Construye una marca con seguidores fieles.",
+        cost: 700,
+        effects: [
+          { label: "+25 Clientes", key: "clients", val: 25, type: "pos" },
+          { label: "+25% Reputación", key: "rep", val: 25, type: "pos" },
+          { label: "+€1,500 Ventas", key: "sales", val: 1500, type: "pos" },
+          { label: "+5% Digital", key: "digital", val: 5, type: "pos" }
+        ],
+        tech: null,
+        learning: "El 54% de los usuarios de redes sociales las usan para investigar productos antes de comprar.",
+        good: true
+      },
+      {
+        id: "social_none",
+        icon: "🚫",
+        title: "No Usar Redes Sociales",
+        desc: "Ignorar Instagram, Facebook y LinkedIn. Pierdes visibilidad y la conversación sobre tu marca ocurre sin ti.",
+        cost: 0,
+        effects: [
+          { label: "-5 Clientes", key: "clients", val: -5, type: "neg" },
+          { label: "-5% Reputación", key: "rep", val: -5, type: "neg" },
+          { label: "Sin presencia social", key: null, val: 0, type: "neg" }
+        ],
+        tech: null,
+        learning: "Las empresas con presencia activa en redes tienen 3x más confianza de los consumidores.",
+        good: false
+      }
+    ]
+  },
+  {
+    id: 9,
+    badge: "NIVEL 10",
+    title: "Atención al Cliente Digital",
+    desc: "El último paso: digitaliza completamente la experiencia del cliente.",
+    choices: [
+      {
+        id: "support_omni",
+        icon: "🎧",
+        title: "Plataforma Omnicanal Completa",
+        desc: "Chat en vivo, email automation, app de cliente, tickets de soporte y valoraciones. Experiencia 5 estrellas garantizada.",
+        cost: 1500,
+        effects: [
+          { label: "+20% Digital", key: "digital", val: 20, type: "pos" },
+          { label: "+30 Clientes", key: "clients", val: 30, type: "pos" },
+          { label: "+30% Reputación", key: "rep", val: 30, type: "pos" },
+          { label: "+€3,000 Ventas", key: "sales", val: 3000, type: "pos" }
+        ],
+        tech: null,
+        learning: "El 89% de los clientes abandona una marca tras una mala experiencia de atención.",
+        good: true
+      },
+      {
+        id: "support_email",
+        icon: "📧",
+        title: "Solo Atención por Email",
+        desc: "Responder emails manualmente. Económico pero lento. Los clientes de hoy esperan respuestas inmediatas.",
+        cost: 0,
+        effects: [
+          { label: "+5 Clientes", key: "clients", val: 5, type: "pos" },
+          { label: "+5% Reputación", key: "rep", val: 5, type: "pos" },
+          { label: "Respuesta lenta", key: null, val: 0, type: "neg" }
+        ],
+        tech: null,
+        learning: "El tiempo medio de respuesta aceptable para clientes online es inferior a 1 hora.",
+        good: false
+      }
+    ]
+  }
+];
+
+// ---- RANDOM EVENTS ----
+const RANDOM_EVENTS = [
+  {
+    id: "re_hack",
+    icon: "💀",
+    title: "¡CIBERATAQUE DETECTADO!",
+    desc: "Un ransomware ha intentado cifrar tus archivos. Si tienes buena seguridad estás protegido, sino perderás dinero y clientes.",
+    options: [
+      { text: "Pagar el rescate (€2,000)", action: "pay_ransom" },
+      { text: "Restaurar backup (si tienes)", action: "restore_backup" }
+    ],
+    trigger: "high_danger"
+  },
+  {
+    id: "re_viral",
+    icon: "🚀",
+    title: "¡POST VIRAL EN REDES!",
+    desc: "Uno de tus posts en redes sociales se ha hecho viral. Miles de personas conocen ahora tu marca.",
+    options: [
+      { text: "Aprovechar con campaña urgente (-€500)", action: "viral_campaign" },
+      { text: "Dejarlo fluir orgánicamente", action: "viral_organic" }
+    ],
+    trigger: "has_mkt"
+  },
+  {
+    id: "re_competitor",
+    icon: "⚔️",
+    title: "¡COMPETIDOR DIGITAL AGRESIVO!",
+    desc: "Un competidor online lanza precios un 20% más baratos. Necesitas diferenciarte con calidad y servicio.",
+    options: [
+      { text: "Mejorar calidad/servicio (-€800)", action: "improve_quality" },
+      { text: "Bajar también precios", action: "lower_prices" }
+    ],
+    trigger: "always"
+  },
+  {
+    id: "re_review",
+    icon: "⭐",
+    title: "¡RESEÑA NEGATIVA VIRAL!",
+    desc: "Un cliente insatisfecho ha dejado una reseña negativa que se está compartiendo. ¿Cómo respondes?",
+    options: [
+      { text: "Responder profesionalmente y compensar (-€300)", action: "handle_review" },
+      { text: "Ignorar la reseña", action: "ignore_review" }
+    ],
+    trigger: "always"
+  },
+  {
+    id: "re_grant",
+    icon: "🎁",
+    title: "¡SUBVENCIÓN DIGITAL APROBADA!",
+    desc: "El Kit Digital te ha concedido una subvención de €3,000 para digitalización empresarial. ¡A aprovecharlo!",
+    options: [
+      { text: "¡Invertir en tecnología!", action: "use_grant" }
+    ],
+    trigger: "always"
+  },
+  {
+    id: "re_gdpr",
+    icon: "⚖️",
+    title: "INSPECCIÓN RGPD",
+    desc: "La AEPD inspecciona tu tratamiento de datos de clientes. Si cumples la normativa, sin problema.",
+    options: [
+      { text: "Presentar documentación de cumplimiento", action: "gdpr_compliant" },
+      { text: "Intentar negociar", action: "gdpr_negotiate" }
+    ],
+    trigger: "has_data"
+  },
+  {
+    id: "re_influencer",
+    icon: "📸",
+    title: "¡COLABORACIÓN CON INFLUENCER!",
+    desc: "Un influencer con 50K seguidores quiere colaborar con tu negocio a cambio de descuentos.",
+    options: [
+      { text: "Aceptar colaboración (-€400)", action: "influencer_yes" },
+      { text: "Rechazar oferta", action: "influencer_no" }
+    ],
+    trigger: "has_mkt"
+  }
+];
+
+// ---- PARTICLES ----
+function initParticles() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      size: Math.random() * 2 + 0.5,
+      opacity: Math.random() * 0.5 + 0.1,
+      color: Math.random() > 0.5 ? '#00d4ff' : Math.random() > 0.5 ? '#0080ff' : '#7c3aed'
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.opacity;
+      ctx.fill();
+    });
+    // Lines between close particles
+    ctx.globalAlpha = 0.04;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = '#00d4ff';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ---- CHART ----
+let chartData = [0,0,0,0,0,0,0];
+function drawChart() {
+  const canvas = document.getElementById('mini-chart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth;
+  const H = 80;
+  canvas.width = W; canvas.height = H;
+
+  const maxVal = Math.max(...chartData, 1000);
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(30,58,95,0.5)';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i <= 4; i++) {
+    const y = (H - 10) * i / 4 + 5;
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+
+  // Area fill
+  const gradient = ctx.createLinearGradient(0, 0, 0, H);
+  gradient.addColorStop(0, 'rgba(0,212,255,0.3)');
+  gradient.addColorStop(1, 'rgba(0,212,255,0)');
+
+  const pts = chartData.map((v, i) => ({
+    x: (i / (chartData.length - 1)) * W,
+    y: H - 10 - ((v / maxVal) * (H - 20))
+  }));
+
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, H);
+  pts.forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.lineTo(pts[pts.length-1].x, H);
+  ctx.closePath();
+  ctx.fillStyle = gradient;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  pts.forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.strokeStyle = '#00d4ff';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Dots
+  pts.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#00d4ff';
+    ctx.fill();
+  });
+}
+
+// ---- UI UPDATES ----
+function updateUI() {
+  // Topbar
+  document.getElementById('stat-money').textContent = '€' + G.money.toLocaleString('es-ES');
+  document.getElementById('stat-clients').textContent = G.clients;
+  document.getElementById('stat-rep').textContent = Math.min(100, Math.max(0, G.rep)) + '%';
+  document.getElementById('stat-digital').textContent = Math.min(100, G.digital) + '%';
+  document.getElementById('stat-danger').textContent = Math.min(100, Math.max(0, G.dangerLevel)) + '%';
+
+  // Metrics
+  document.getElementById('m-money').textContent = '€' + G.money.toLocaleString('es-ES');
+  document.getElementById('m-sales').textContent = '€' + G.sales.toLocaleString('es-ES');
+  document.getElementById('m-clients').textContent = G.clients;
+  document.getElementById('m-prod').textContent = Math.min(100, G.productivity) + '%';
+
+  // Progress bars
+  const d = Math.min(100, Math.max(0, G.digital));
+  const r = Math.min(100, Math.max(0, G.rep));
+  const s = Math.min(100, Math.max(0, G.security));
+  const p = Math.min(100, Math.max(0, G.productivity));
+  const dg = Math.min(100, Math.max(0, G.dangerLevel));
+
+  document.getElementById('pb-digital').style.width = d + '%';
+  document.getElementById('pb-digital-val').textContent = d + '%';
+  document.getElementById('pb-rep').style.width = r + '%';
+  document.getElementById('pb-rep-val').textContent = r + '%';
+  document.getElementById('pb-security').style.width = s + '%';
+  document.getElementById('pb-security-val').textContent = s + '%';
+  document.getElementById('pb-prod').style.width = p + '%';
+  document.getElementById('pb-prod-val').textContent = p + '%';
+  document.getElementById('pb-danger').style.width = dg + '%';
+  document.getElementById('pb-danger-val').textContent = dg + '%';
+
+  // Company evolution
+  updateCompanyVisual();
+
+  // Techs
+  Object.keys(G.techs).forEach(k => {
+    const el = document.getElementById('tech-' + k);
+    if (el) el.classList.toggle('unlocked', G.techs[k]);
+  });
+
+  // Missions
+  checkMissions();
+
+  // Chart
+  chartData = [...G.salesHistory];
+  drawChart();
+}
+
+function updateCompanyVisual() {
+  const d = G.digital;
+  const icon = document.getElementById('company-icon');
+  const name = document.getElementById('company-name');
+  const level = document.getElementById('company-level');
+
+  if (d < 20) {
+    icon.textContent = '🏪';
+    name.textContent = 'TIENDA RODRÍGUEZ';
+    level.textContent = 'Empresa Tradicional';
+    icon.style.filter = 'none';
+  } else if (d < 40) {
+    icon.textContent = '🏬';
+    name.textContent = 'RODRÍGUEZ & DIGITAL';
+    level.textContent = 'Empresa Híbrida';
+    icon.style.filter = 'drop-shadow(0 0 8px rgba(0,212,255,0.5))';
+  } else if (d < 60) {
+    icon.textContent = '💼';
+    name.textContent = 'RODRÍGUEZ DIGITAL';
+    level.textContent = 'Empresa Digitalizada';
+    icon.style.filter = 'drop-shadow(0 0 12px rgba(0,128,255,0.6))';
+  } else if (d < 80) {
+    icon.textContent = '🚀';
+    name.textContent = 'DIGITAL RODRÍGUEZ';
+    level.textContent = 'Empresa Moderna';
+    icon.style.filter = 'drop-shadow(0 0 16px rgba(124,58,237,0.7))';
+  } else {
+    icon.textContent = '⚡';
+    name.textContent = 'RODRÍGUEZ TECH';
+    level.textContent = '¡Empresa Líder Digital!';
+    icon.style.filter = 'drop-shadow(0 0 20px rgba(0,212,255,0.9))';
+    icon.style.animation = 'title-glow 2s ease-in-out infinite alternate';
+  }
+}
+
+function checkMissions() {
+  // Web mission
+  if (!G.missions.web && G.techs.web) {
+    G.missions.web = true;
+    G.money += 1500;
+    completeMission('mission-web', '🌐 Presencia online completada: +€1,500');
+  }
+  // 100 clients
+  if (!G.missions.m100clients && G.clients >= 100) {
+    G.missions.m100clients = true;
+    G.money += 2000;
+    completeMission('mission-100clients', '👥 100 clientes alcanzados: +€2,000');
+  }
+  // Security 70%
+  if (!G.missions.secure && G.security >= 70) {
+    G.missions.secure = true;
+    G.money += 1000;
+    completeMission('mission-secure', '🛡️ Seguridad al 70%: +€1,000');
+  }
+}
+
+function completeMission(id, msg) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('done');
+    el.querySelector('.mission-check').textContent = '✅';
+  }
+  showToast('🎉 ' + msg, 'good');
+  addEvent(msg, 'event-good', '🎯');
+}
+
+// ---- LEVEL RENDERING ----
+function renderLevel(lvlIndex) {
+  if (lvlIndex >= LEVELS.length) {
+    endGame();
+    return;
+  }
+  const lvl = LEVELS[lvlIndex];
+  document.getElementById('level-badge').textContent = lvl.badge;
+  document.getElementById('level-title').textContent = lvl.title;
+  document.getElementById('level-desc').textContent = lvl.desc;
+
+  const area = document.getElementById('decision-area');
+  area.innerHTML = '';
+
+  lvl.choices.forEach(choice => {
+    const card = document.createElement('div');
+    card.className = 'decision-card' + (choice.good ? ' good-option' : ' bad-option');
+    card.innerHTML = `
+      <div class="decision-icon">${choice.icon}</div>
+      <div class="decision-content">
+        <div class="decision-title">${choice.title}</div>
+        <div class="decision-desc">${choice.desc}</div>
+        <div class="decision-effects">
+          ${choice.effects.map(e => `<span class="effect-tag ${e.type}">${e.label}</span>`).join('')}
+        </div>
+      </div>
+      ${choice.cost > 0 ? `<div class="decision-cost">-€${choice.cost.toLocaleString()}</div>` : ''}
+    `;
+    card.addEventListener('click', () => applyChoice(lvlIndex, choice));
+    area.appendChild(card);
+  });
+
+  // Scroll to top of main
+  document.getElementById('main-content').scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Maybe trigger random event
+  if (lvlIndex > 0 && Math.random() > 0.4) {
+    setTimeout(() => triggerRandomEvent(), 1000);
+  }
+}
+
+function applyChoice(lvlIndex, choice) {
+  // Check if can afford
+  if (choice.cost > 0 && G.money < choice.cost) {
+    showToast('❌ ¡No tienes suficiente presupuesto!', 'bad');
+    showModal('💸', '¡Fondos insuficientes!',
+      `Necesitas €${choice.cost.toLocaleString()} pero solo tienes €${G.money.toLocaleString()}. Considera decisiones más económicas o espera a ganar más ventas.`,
+      [{ text: 'Entendido', action: closeModal }]);
+    return;
+  }
+
+  // Apply effects
+  choice.effects.forEach(e => {
+    if (e.key && e.val !== 0) {
+      G[e.key] = Math.max(0, G[e.key] + e.val);
+    }
+  });
+
+  // Deduct cost
+  if (choice.cost > 0) G.money = Math.max(0, G.money - choice.cost);
+
+  // Apply sales income
+  G.money = Math.max(0, G.money);
+
+  // Unlock tech
+  if (choice.tech) G.techs[choice.tech] = true;
+
+  // Update sales history
+  G.salesHistory.push(G.sales);
+  if (G.salesHistory.length > 7) G.salesHistory.shift();
+
+  // Add learning
+  if (choice.learning && !G.learnings.includes(choice.learning)) {
+    G.learnings.push(choice.learning);
+  }
+
+  // Log event
+  const icon = choice.good ? '✅' : '⚠️';
+  const cls = choice.good ? 'event-good' : 'event-warn';
+  addEvent(`${choice.title} — ${choice.effects.filter(e=>e.key).map(e=>e.label).join(', ')}`, cls, icon);
+
+  // Show feedback modal
+  const goodText = choice.good ?
+    `¡Excelente decisión! ${choice.learning}` :
+    `Decisión tomada. Ten en cuenta: ${choice.learning}`;
+
+  const effectsSummary = choice.effects.filter(e=>e.key && e.val !== 0).map(e=>`${e.label}`).join(' · ');
+
+  showModal(
+    choice.good ? '✅' : '⚠️',
+    choice.good ? '¡Buena decisión!' : 'Decisión tomada',
+    `<strong>${effectsSummary}</strong><br><br>${goodText}`,
+    [{ text: 'Siguiente decisión →', action: () => { closeModal(); nextLevel(); } }]
+  );
+
+  updateUI();
+
+  // Check if bankrupt
+  if (G.money <= 0) {
+    setTimeout(() => endGame('broke'), 1500);
+  }
+}
+
+function nextLevel() {
+  G.level++;
+
+  // Add income from sales to money
+  const income = Math.floor(G.sales * 0.1);
+  if (income > 0) {
+    G.money += income;
+    addEvent(`+€${income} ingresos de ventas`, 'event-good', '💰');
+  }
+
+  // Danger event
+  if (G.dangerLevel > 60 && !G.techs.sec) {
+    const dmg = Math.floor(G.money * 0.15);
+    G.money = Math.max(0, G.money - dmg);
+    G.clients = Math.max(0, G.clients - 10);
+    addEvent(`⚠️ Brecha de seguridad: -€${dmg} y -10 clientes`, 'event-bad', '💀');
+    showToast('💀 ¡Ataque de seguridad! Pierdes €' + dmg, 'bad');
+  }
+
+  updateUI();
+
+  if (G.level >= LEVELS.length) {
+    endGame();
+  } else {
+    renderLevel(G.level);
+  }
+}
+
+// ---- RANDOM EVENTS ----
+function triggerRandomEvent() {
+  if (G.randomEventActive || G.gameOver) return;
+
+  const possible = RANDOM_EVENTS.filter(e => {
+    if (e.trigger === 'high_danger') return G.dangerLevel > 40;
+    if (e.trigger === 'has_mkt') return G.techs.mkt;
+    if (e.trigger === 'has_data') return G.techs.data || G.techs.cloud;
+    return true;
+  });
+
+  if (possible.length === 0) return;
+  const evt = possible[Math.floor(Math.random() * possible.length)];
+
+  G.randomEventActive = true;
+  const panel = document.getElementById('random-event');
+  document.getElementById('re-title').textContent = evt.icon + ' ' + evt.title;
+  document.getElementById('re-desc').textContent = evt.desc;
+
+  const optionsEl = document.getElementById('re-options');
+  optionsEl.innerHTML = '';
+  evt.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 're-btn';
+    btn.textContent = opt.text;
+    btn.addEventListener('click', () => resolveRandomEvent(evt, opt.action));
+    optionsEl.appendChild(btn);
+  });
+
+  panel.classList.add('visible');
+  addEvent('⚡ Evento: ' + evt.title, 'event-warn', '⚡');
+}
+
+function resolveRandomEvent(evt, action) {
+  const panel = document.getElementById('random-event');
+  panel.classList.remove('visible');
+  G.randomEventActive = false;
+
+  switch (action) {
+    case 'pay_ransom':
+      G.money = Math.max(0, G.money - 2000);
+      addEvent('Pagaste €2,000 de rescate al atacante', 'event-bad', '💀');
+      showToast('💀 -€2,000 por rescate de ransomware', 'bad');
+      break;
+    case 'restore_backup':
+      if (G.techs.cloud || G.techs.sec) {
+        addEvent('Backup restaurado exitosamente. Sin pérdidas.', 'event-good', '✅');
+        showToast('✅ Backup restaurado. ¡La nube te salvó!', 'good');
+      } else {
+        G.money = Math.max(0, G.money - 3000);
+        G.clients = Math.max(0, G.clients - 20);
+        addEvent('Sin backup: -€3,000 y -20 clientes', 'event-bad', '💀');
+        showToast('💀 Sin backup pierdes €3,000', 'bad');
+      }
+      break;
+    case 'viral_campaign':
+      G.money = Math.max(0, G.money - 500);
+      G.clients += 50;
+      G.rep = Math.min(100, G.rep + 20);
+      G.sales += 2000;
+      addEvent('¡Campaña viral exitosa! +50 clientes, +€2,000 ventas', 'event-good', '🚀');
+      showToast('🚀 +50 clientes gracias a tu post viral!', 'good');
+      break;
+    case 'viral_organic':
+      G.clients += 20;
+      G.rep = Math.min(100, G.rep + 10);
+      addEvent('Post viral orgánico: +20 clientes', 'event-good', '📱');
+      showToast('📱 +20 clientes por el post viral', 'good');
+      break;
+    case 'improve_quality':
+      G.money = Math.max(0, G.money - 800);
+      G.rep = Math.min(100, G.rep + 15);
+      G.clients += 10;
+      addEvent('Mejoraste calidad: +15% reputación', 'event-good', '⭐');
+      showToast('⭐ Calidad mejorada, clientes fieles', 'good');
+      break;
+    case 'lower_prices':
+      G.sales = Math.max(0, G.sales - 1000);
+      G.rep = Math.max(0, G.rep - 10);
+      addEvent('Bajaste precios: -€1,000 ventas, -10% reputación', 'event-bad', '📉');
+      showToast('📉 Bajar precios dañó tu margen', 'bad');
+      break;
+    case 'handle_review':
+      G.money = Math.max(0, G.money - 300);
+      G.rep = Math.min(100, G.rep + 20);
+      addEvent('Gestionaste la reseña: +20% reputación', 'event-good', '⭐');
+      showToast('⭐ ¡Crisis de reputación convertida en oportunidad!', 'good');
+      break;
+    case 'ignore_review':
+      G.rep = Math.max(0, G.rep - 20);
+      G.clients = Math.max(0, G.clients - 15);
+      addEvent('Ignoraste la reseña: -20% reputación, -15 clientes', 'event-bad', '😡');
+      showToast('😡 -15 clientes por reseña ignorada', 'bad');
+      break;
+    case 'use_grant':
+      G.money += 3000;
+      G.digital = Math.min(100, G.digital + 10);
+      addEvent('¡Kit Digital: +€3,000 subvención!', 'event-good', '🎁');
+      showToast('🎁 +€3,000 del Kit Digital', 'good');
+      break;
+    case 'gdpr_compliant':
+      G.rep = Math.min(100, G.rep + 10);
+      addEvent('Cumples el RGPD. Inspección superada.', 'event-good', '✅');
+      showToast('✅ Inspección RGPD superada', 'good');
+      break;
+    case 'gdpr_negotiate':
+      G.money = Math.max(0, G.money - 1500);
+      G.rep = Math.max(0, G.rep - 15);
+      addEvent('Multa RGPD: -€1,500 y -15% reputación', 'event-bad', '⚖️');
+      showToast('⚖️ Multa RGPD: -€1,500', 'bad');
+      break;
+    case 'influencer_yes':
+      G.money = Math.max(0, G.money - 400);
+      G.clients += 35;
+      G.rep = Math.min(100, G.rep + 15);
+      G.sales += 1500;
+      addEvent('Colaboración influencer: +35 clientes, +€1,500 ventas', 'event-good', '📸');
+      showToast('📸 Influencer generó 35 nuevos clientes', 'good');
+      break;
+    case 'influencer_no':
+      addEvent('Rechazaste al influencer. Sin cambios.', '', '📸');
+      break;
+  }
+
+  updateUI();
+}
+
+// ---- TIMER ----
+function startTimer() {
+  G.timer = setInterval(() => {
+    if (G.paused || G.gameOver) return;
+    G.timeLeft--;
+
+    const min = Math.floor(G.timeLeft / 60);
+    const sec = G.timeLeft % 60;
+    const timerEl = document.getElementById('topbar-timer');
+    timerEl.textContent = `⏱ ${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+
+    if (G.timeLeft <= 60) timerEl.classList.add('urgent');
+    else timerEl.classList.remove('urgent');
+
+    // Passive income
+    if (G.timeLeft % 30 === 0 && G.sales > 0) {
+      const income = Math.floor(G.sales * 0.05);
+      G.money += income;
+      addEvent(`+€${income} ingresos pasivos`, 'event-good', '💰');
+      updateUI();
+    }
+
+    if (G.timeLeft <= 0) {
+      clearInterval(G.timer);
+      endGame('timeout');
+    }
+  }, 1000);
+}
+
+// ---- EVENTS LOG ----
+function addEvent(text, cls, icon) {
+  G.events.unshift({ text, cls, icon, time: new Date() });
+  const list = document.getElementById('events-list');
+  const item = document.createElement('div');
+  item.className = `event-item ${cls}`;
+  item.innerHTML = `
+    <span class="event-ico">${icon}</span>
+    <span>${text}</span>
+    <span class="event-time">ahora</span>
+  `;
+  list.insertBefore(item, list.firstChild);
+  if (list.children.length > 15) list.removeChild(list.lastChild);
+}
+
+// ---- MODAL ----
+function showModal(icon, title, body, actions) {
+  document.getElementById('modal-icon').textContent = icon;
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = body;
+  const actionsEl = document.getElementById('modal-actions');
+  actionsEl.innerHTML = '';
+  actions.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-modal primary';
+    btn.textContent = a.text;
+    btn.addEventListener('click', a.action);
+    actionsEl.appendChild(btn);
+  });
+  document.getElementById('modal-overlay').classList.add('visible');
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('visible');
+}
+
+// ---- TOAST ----
+let toastTimeout;
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  toast.className = 'toast show t-' + type;
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ---- END GAME ----
+function endGame(reason) {
+  if (G.gameOver) return;
+  G.gameOver = true;
+  clearInterval(G.timer);
+
+  const d = G.digital;
+  const score = Math.floor(
+    d * 3 +
+    (G.rep * 2) +
+    (G.security * 1.5) +
+    (G.productivity * 1) +
+    Math.min(50, G.clients * 0.5) +
+    Math.min(50, G.money / 500)
+  );
+  G.score = score;
+
+  let badge, type, desc, color;
+
+  if (reason === 'broke') {
+    badge = '💸'; type = 'EMPRESA QUEBRADA';
+    desc = 'Las malas decisiones financieras acabaron con tu negocio. La digitalización requiere inversión inteligente y planificación.';
+    color = 'var(--red)';
+  } else if (d < 30 || score < 150) {
+    badge = '🏚️'; type = 'EMPRESA OBSOLETA';
+    desc = 'Tu negocio no logró digitalizarse a tiempo. La competencia digital te superó. Recuerda: digitalizar es sobrevivir.';
+    color = 'var(--red)';
+  } else if (d < 65 || score < 350) {
+    badge = '🏢'; type = 'EMPRESA MODERNA';
+    desc = '¡Bien hecho! Has modernizado parcialmente tu empresa. Sigues siendo competitivo, pero aún hay margen de mejora digital.';
+    color = 'var(--amber)';
+  } else {
+    badge = '🚀'; type = '¡EMPRESA LÍDER DIGITAL!';
+    desc = '¡EXTRAORDINARIO! Has transformado por completo tu empresa en una potencia digital. Eres un referente en transformación digital.';
+    color = 'var(--green)';
+  }
+
+  // Populate end screen
+  document.getElementById('end-badge').textContent = badge;
+  const typeEl = document.getElementById('end-type');
+  typeEl.textContent = type;
+  typeEl.style.color = color;
+  document.getElementById('end-desc').textContent = desc;
+  document.getElementById('end-digital').textContent = d + '%';
+  document.getElementById('end-money').textContent = '€' + G.money.toLocaleString('es-ES');
+  document.getElementById('end-clients').textContent = G.clients;
+  document.getElementById('end-score').textContent = score;
+
+  const tipsList = document.getElementById('end-tips-list');
+  const defaultTips = [
+    "La transformación digital es un proceso continuo, no un destino.",
+    "La ciberseguridad debe ser prioritaria desde el día uno.",
+    "Los datos son el activo más valioso de una empresa digital.",
+    "El marketing digital tiene 10x más ROI que el tradicional.",
+    "La automatización libera a tu equipo para tareas de mayor valor."
+  ];
+  const tips = G.learnings.length > 0 ? G.learnings.slice(0, 5) : defaultTips;
+  tipsList.innerHTML = tips.map(t => `<li>${t}</li>`).join('');
+
+  // Switch screen
+  showScreen('screen-end');
+}
+
+// ---- SCREEN MANAGEMENT ----
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ---- GAME FLOW ----
+function startGame() {
+  initState();
+  showScreen('screen-game');
+  renderLevel(0);
+  updateUI();
+  startTimer();
+}
+
+function restartGame() {
+  showScreen('screen-intro');
+}
+
+// ---- INIT ----
+initParticles();
+window.addEventListener('resize', drawChart);
+</script>
+</body>
+</html>
